@@ -19,23 +19,19 @@ app.use(morgan('combined')); // configure default log output
 console.log('Server running at http://localhost:3456');
 console.log('API endpoint running at http://localhost:3456/todos');
 
-app.all('/*', function(req, res, next) {
+app.all('/*', function (req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
-  //  res.header("Access-Control-Allow-Headers, Access-Control-Allow-Headers, Origin, X-Requested-With, Content-Type, Accept");
-  res.header(
-    'Access-Control-Allow-Headers',
-    'Origin, X-Requested-With, Content-Type, Accept'
-  );
-
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  // res.header('Access-Control-Max-Age', 60);
   next();
 });
 
-app.get('/', function(req, res) {
+app.get('/', function (req, res) {
   res.status(200).send('API endpoint running at http://localhost:3456/todos');
 });
 
-app.get('/todos', function(req, res) {
+app.get('/todos', function (req, res) {
   const completed = req.param('completed');
   console.log('Completed:' + completed);
   let result;
@@ -51,10 +47,10 @@ app.get('/todos', function(req, res) {
   res.status(200).json({ result: result }); // Wrap array in a 'data' property for security: See: http://stackoverflow.com/questions/3503102/what-are-top-level-json-arrays-and-why-are-they-a-security-risk
 });
 
-app.get('/todos/:id', function(req, res) {
+app.get('/todos/:id', function (req, res) {
   var id = req.param('id');
 
-  var index = _.findIndex(todos, function(e) {
+  var index = _.findIndex(todos, function (e) {
     return e.id == id;
   }); // id is a string!
 
@@ -65,7 +61,7 @@ app.get('/todos/:id', function(req, res) {
   }
 });
 
-app.post('/todos', function(req, res) {
+app.post('/todos', function (req, res) {
   if (!req.is('json')) {
     res.status(415).send('Payload must be JSON');
   }
@@ -79,16 +75,16 @@ app.post('/todos', function(req, res) {
 
   console.log(util.inspect(todos));
 
-  // res.status(201).json({ result: newTodo });
-  setTimeout(() => res.status(201).json({ result: newTodo }), 2000);
+  res.status(201).json({ result: newTodo });
+  // setTimeout(() => res.status(201).json({ result: newTodo }), 2000);
   // res.status(500).json(newTodo); // return an error to see how the client behaves...
 });
 
-app.put('/todos/:id', function(req, res) {
+app.put('/todos/:id', function (req, res) {
   var id = req.param('id');
   var updatedTodo = req.body;
 
-  var index = _.findIndex(todos, function(e) {
+  var index = _.findIndex(todos, function (e) {
     return e.id == id;
   }); // id is a string!
 
@@ -101,10 +97,10 @@ app.put('/todos/:id', function(req, res) {
   }
 });
 
-app.delete('/todos/:id', function(req, res) {
+app.delete('/todos/:id', function (req, res) {
   var id = req.param('id');
 
-  var index = _.findIndex(todos, function(e) {
+  var index = _.findIndex(todos, function (e) {
     return e.id == id;
   }); // id is a string!
 
